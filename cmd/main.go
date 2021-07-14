@@ -1,9 +1,10 @@
 package main
 
 import (
-	"fmt"
+	"taskozon/internal/server"
 )
 
 func main() {
-	fmt.Println("hi from docker")
+	server := server.NewServer()
+	server.Start()
 }
