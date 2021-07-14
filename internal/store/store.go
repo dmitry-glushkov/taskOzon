@@ -17,10 +17,9 @@ func (s *Store) Set(key string, value interface{}, ttl int) {
 	s.Data[key] = value
 	if ttl != 0 {
 		liveTime := time.Duration(ttl) * time.Second
-		timer := time.AfterFunc(liveTime, func() {
+		time.AfterFunc(liveTime, func() {
 			delete(s.Data, key)
 		})
-		defer timer.Stop()
 	}
 }
 
