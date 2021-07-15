@@ -3,7 +3,7 @@
 ```sh
 docker-compose up
 ```
-----------------
+---
 
 ## Запросы
 
@@ -40,3 +40,9 @@ curl --header "Content-Type: application/json" \
 --data '{"key": "<KEY>"}' \
 http://localhost:8080/del
 ```
+---
+## Benchmark
+Результаты теста производительности для метода *set*
+| Всего операций |  ns/op  |  B/op  | Allocs/op |
+| -------------- | ------- | ------ | --------- |
+|     53947      |  22058  |  3844  |    49     |
