@@ -12,10 +12,10 @@ type Server struct {
 	store  *store.Store
 }
 
-func NewServer() *Server {
+func NewServer(maxSize int) *Server {
 	server := &Server{
 		router: gin.Default(),
-		store:  store.New(),
+		store:  store.New(maxSize),
 	}
 	server.ConfigureRouter()
 	return server
@@ -32,6 +32,6 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	s.router.ServeHTTP(w, r)
 }
 
-func (s *Server) Start() {
-	s.router.Run(":8080")
+func (s *Server) Start(port string) {
+	s.router.Run(port)
 }

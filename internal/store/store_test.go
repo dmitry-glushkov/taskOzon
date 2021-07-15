@@ -8,7 +8,7 @@ import (
 )
 
 func TestStore_Set(t *testing.T) {
-	store := New()
+	store := New(100)
 
 	store.Set("no_ttl", "value", 0)
 	time.Sleep(1 * time.Second)
@@ -20,14 +20,14 @@ func TestStore_Set(t *testing.T) {
 }
 
 func TestStore_Get(t *testing.T) {
-	store := New()
+	store := New(100)
 
 	store.Set("key", "value", 0)
 	assert.NotNil(t, store.Get("key"))
 }
 
 func TestStore_GetAllKeys(t *testing.T) {
-	store := New()
+	store := New(100)
 
 	assert.Equal(t, []string{}, store.GetAllKeys())
 
@@ -37,7 +37,7 @@ func TestStore_GetAllKeys(t *testing.T) {
 }
 
 func TestStore_Delete(t *testing.T) {
-	store := New()
+	store := New(100)
 
 	store.Set("key", "val", 0)
 	assert.NotNil(t, store.Data["key"])

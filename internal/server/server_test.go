@@ -12,7 +12,7 @@ import (
 )
 
 func TestServer_SetHandler(t *testing.T) {
-	server := NewServer()
+	server := NewServer(100)
 	testCases := []struct {
 		name         string
 		payload      interface{}
@@ -57,7 +57,7 @@ func TestServer_SetHandler(t *testing.T) {
 }
 
 func TestServer_GetHandler(t *testing.T) {
-	server := NewServer()
+	server := NewServer(100)
 	server.store.Set("1", "val", 0)
 
 	b := &bytes.Buffer{}
@@ -75,7 +75,7 @@ func TestServer_GetHandler(t *testing.T) {
 }
 
 func TestServer_GetAllKeysHandler(t *testing.T) {
-	server := NewServer()
+	server := NewServer(100)
 	server.store.Set("1", "val", 0)
 	server.store.Set("2", "val", 0)
 

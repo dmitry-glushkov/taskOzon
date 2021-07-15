@@ -3,12 +3,14 @@ package store
 import "time"
 
 type Store struct {
-	Data map[string]interface{}
+	Data    map[string]interface{}
+	MaxSize int
 }
 
-func New() *Store {
+func New(maxSize int) *Store {
 	return &Store{
-		Data: make(map[string]interface{}),
+		Data:    make(map[string]interface{}),
+		MaxSize: maxSize,
 	}
 }
 
