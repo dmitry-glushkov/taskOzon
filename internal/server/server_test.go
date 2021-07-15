@@ -7,6 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -56,23 +57,33 @@ func TestServer_SetHandler(t *testing.T) {
 }
 
 func TestServer_GetHandler(t *testing.T) {
+	server := NewServer()
+	server.store.Set("1", "val", 0)
 
+	b := &bytes.Buffer{}
+	payload := map[string]interface{}{
+		"key": "1",
+	}
+	json.NewEncoder(b).Encode(payload)
+	resp := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(resp)
+	c.Request, _ = http.NewRequest("POST", "/get", b)
+	server.ServeHTTP(resp, c.Request)
+	var result string
+	json.Unmarshal(resp.Body.Bytes(), &result)
+	assert.Equal(t, "val", result)
 }
 
 func TestServer_GetAllKeysHandler(t *testing.T) {
-	// server := NewServer()
-	// server.store.Set("1", "val", 0)
-	// server.store.Set("2", "val", 0)
+	server := NewServer()
+	server.store.Set("1", "val", 0)
+	server.store.Set("2", "val", 0)
 
-	// var result []string
-	// b := &bytes.Buffer{}
-	// rec := httptest.NewRecorder()
-	// req, _ := http.NewRequest(http.MethodGet, "/getallkeys", b)
-	// json.NewDecoder(b).Decode(result)
-	// server.ServeHTTP(rec, req)
-	// assert.Equal(t, []string{"1", "2"}, result)
-}
-
-func TestServer_DeleteHandler(t *testing.T) {
-
+	resp := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(resp)
+	c.Request, _ = http.NewRequest("GET", "/getallkeys", nil)
+	server.ServeHTTP(resp, c.Request)
+	var result []string
+	json.Unmarshal(resp.Body.Bytes(), &result)
+	assert.Equal(t, []string{"1", "2"}, result)
 }
