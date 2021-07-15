@@ -42,6 +42,10 @@ curl --header "Content-Type: application/json" \
 http://localhost:8080/del
 ```
 ---
+
+#### В файле конфига можно задать максимальное количество записей.
+
+---
 ## Benchmark
 Результаты теста производительности для метода *set*
 | Всего операций |  ns/op  |  B/op  | Allocs/op |
