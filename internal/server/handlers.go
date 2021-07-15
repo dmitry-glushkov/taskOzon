@@ -25,7 +25,10 @@ func SetHandler(store *store.Store) gin.HandlerFunc {
 			c.Writer.WriteHeader(http.StatusUnprocessableEntity)
 			return
 		}
-		store.Set(req.Key, req.Value, req.TTL)
+		if err := store.Set(req.Key, req.Value, req.TTL); err != nil {
+			c.String(http.StatusMethodNotAllowed, err.Error())
+			return
+		}
 		c.Writer.WriteHeader(http.StatusCreated)
 	}
 }

@@ -1,6 +1,9 @@
 package store
 
-import "time"
+import (
+	"errors"
+	"time"
+)
 
 type Store struct {
 	Data    map[string]interface{}
@@ -15,14 +18,18 @@ func New(maxSize int) *Store {
 }
 
 // Принимает ключ, значение и время жизни записи, создает запись
-func (s *Store) Set(key string, value interface{}, ttl int) {
-	s.Data[key] = value
-	if ttl != 0 {
-		liveTime := time.Duration(ttl) * time.Second
-		time.AfterFunc(liveTime, func() {
-			delete(s.Data, key)
-		})
+func (s *Store) Set(key string, value interface{}, ttl int) error {
+	if len(s.Data) < s.MaxSize {
+		s.Data[key] = value
+		if ttl != 0 {
+			liveTime := time.Duration(ttl) * time.Second
+			time.AfterFunc(liveTime, func() {
+				delete(s.Data, key)
+			})
+		}
+		return nil
 	}
+	return errors.New("storage is full")
 }
 
 // Возвращает значение для заданного ключа
